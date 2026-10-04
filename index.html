@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IDX Shareholder Visualizer — 1% & 5%</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">IDX / KSEI Share Ownership</p>
+      <h1>Visualisasi Pemegang Saham ≥1% dan ≥5%</h1>
+      <p class="subtitle">Pantau konsentrasi kepemilikan per emiten: jumlah pemegang saham besar, top holders, lokal/asing, dan perubahan antar tanggal data.</p>
+    </div>
+    <div class="source-card">
+      <span>Sumber default</span>
+      <strong>Data KSEI via IDX</strong>
+      <small>Snapshot: 27-Feb, 30-Jun, 31-Jul, 31-Aug 2026</small>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls">
+      <div class="control-group">
+        <label for="tickerSearch">Cari kode saham / nama emiten</label>
+        <input id="tickerSearch" type="search" placeholder="Contoh: BBCA, BBRI, AADI" />
+      </div>
+      <div class="control-row">
+        <div class="control-group">
+          <label for="tickerSelect">Emiten</label>
+          <select id="tickerSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="thresholdSelect">Threshold</label>
+          <select id="thresholdSelect">
+            <option value="1">≥ 1%</option>
+            <option value="5">≥ 5%</option>
+          </select>
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-group">
+          <label for="dateSelect">Tanggal data</label>
+          <select id="dateSelect"></select>
+        </div>
+        <div class="control-group">
+          <label for="csvUpload">Tambah snapshot CSV</label>
+          <input id="csvUpload" type="file" accept=".csv" multiple />
+        </div>
+      </div>
+      <p class="hint">Upload CSV baru dari IDX/KSEI dengan kolom: date, share_code, issuer_name, investor_name, total_holding_shares, percentage. Kalau ada beberapa tanggal, grafik akan otomatis jadi pergerakan.</p>
+    </section>
+
+    <section class="metrics">
+      <article class="metric-card"><span>Pemegang ≥1%</span><strong id="mCount1">-</strong><small id="mDelta1">-</small></article>
+      <article class="metric-card"><span>Pemegang ≥5%</span><strong id="mCount5">-</strong><small id="mDelta5">-</small></article>
+      <article class="metric-card"><span>Total kepemilikan ≥1%</span><strong id="mPct1">-</strong><small>indikasi konsentrasi</small></article>
+      <article class="metric-card"><span>Total kepemilikan ≥5%</span><strong id="mPct5">-</strong><small>kontrol besar</small></article>
+    </section>
+
+    <section class="grid">
+      <article class="panel chart-panel">
+        <div class="section-title">
+          <div><h2>Pergerakan jumlah pemegang saham</h2><p id="chartCaption">Pilih emiten untuk melihat tren ≥1% vs ≥5%.</p></div>
+        </div>
+        <svg id="lineChart" viewBox="0 0 900 360" role="img" aria-label="Grafik pergerakan pemegang saham"></svg>
+      </article>
+
+      <article class="panel chart-panel">
+        <div class="section-title">
+          <div><h2>Komposisi lokal vs asing</h2><p>Berdasarkan pemegang saham pada tanggal terpilih.</p></div>
+        </div>
+        <svg id="donutChart" viewBox="0 0 420 320" role="img" aria-label="Komposisi lokal asing"></svg>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <div class="section-title"><h2>Top pemegang saham</h2><p>Diurutkan berdasarkan persentase kepemilikan.</p></div>
+        <div class="table-wrap"><table><thead><tr><th>Investor</th><th>Tipe</th><th>L/A</th><th>Saham</th><th>%</th></tr></thead><tbody id="holdersTable"></tbody></table></div>
+      </article>
+      <article class="panel">
+        <div class="section-title"><h2>Ranking emiten</h2><p>Jumlah pemegang saham besar terbanyak pada threshold terpilih.</p></div>
+        <div class="table-wrap"><table><thead><tr><th>Kode</th><th>Emiten</th><th>Jumlah</th><th>Total %</th></tr></thead><tbody id="rankingTable"></tbody></table></div>
+      </article>
+    </section>
+
+    <section class="panel note">
+      <h2>Catatan interpretasi</h2>
+      <ul>
+        <li>Naik/turunnya jumlah pemegang ≥1% bisa menunjukkan perubahan konsentrasi kepemilikan, tapi bukan sinyal beli/jual otomatis.</li>
+        <li>Jumlah pemegang ≥5% lebih cocok untuk melihat pemegang kendali besar; jumlah ≥1% lebih sensitif untuk perubahan investor menengah-besar.</li>
+        <li>Selalu cocokkan dengan laporan keuangan, aksi korporasi, free float, dan berita emiten.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>Edukatif saja, bukan rekomendasi beli/jual. Data perlu dicek ulang ke sumber resmi IDX/KSEI.</footer>
+  <script src="./app.js"></script>
+</body>
+</html>
