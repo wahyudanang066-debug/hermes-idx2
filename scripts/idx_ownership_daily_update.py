@@ -136,7 +136,13 @@ def main() -> int:
             run(['git', 'add', 'index.html', 'styles.css', 'app.js', 'README.md', 'data', 'scripts/export_ownership_csv.py'], timeout=60)
             commit_msg = f'Update ownership data {latest}'
             commit_code, commit_out = run(['git', 'commit', '-m', commit_msg], timeout=120)
-            push_code, push_out = run(['git', 'push', 'origin', 'main'], timeout=300)
+            import os
+            token = os.environ.get('GITHUB_TOKEN') or os.environ.get('GH_TOKEN')
+            if token:
+                push_url = f'https://x-access-token:{token}@github.com/wahyudanang066-debug/hermes-idx2.git'
+                push_code, push_out = run(['git', 'push', push_url, 'main'], timeout=300)
+            else:
+                push_code, push_out = run(['git', 'push', 'origin', 'main'], timeout=300)
             if push_code == 0:
                 print('GitHub publish: berhasil push perubahan ke origin/main.')
             else:
